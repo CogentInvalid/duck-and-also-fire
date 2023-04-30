@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext"],
+    "target": "ES5",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "outDir": "lua",
+    "types": [
+      "lua-types/jit",
+      "love-typescript-definitions"
+    ],
+    "experimentalDecorators": true,
+    "noImplicitThis": true,
+    "sourceMap": true
+  },
+  "tstl": {
+    "luaLibImport": "require",
+    "luaTarget": "5.1",
+    "noImplicitSelf": true,
+    "sourceMapTraceback": true,
+    "noHeader": true,
+    "noResolvePaths": [
+      "../libs/slab",
+      "../libs/loveframes"
+    ]
+  }
+}

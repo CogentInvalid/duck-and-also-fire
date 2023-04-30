@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"explorer.autoReveal": false,
+		"editor.glyphMargin": true,
+		"typescript.tsdk": "node_modules\\typescript\\lib",
+	}
+}

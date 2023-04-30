@@ -1,0 +1,15 @@
+{
+	"webBuild": false,
+	"gameClass": "game.LDGame",
+	"startScene": "game.scenes.MenuScene",
+	"inputBinds": [
+		{"key": "w", "action": "up"},
+		{"key": "s", "action": "down"},
+		{"key": "a", "action": "left"},
+		{"key": "d", "action": "right"},
+		{"key": "up", "action": "up"},
+		{"key": "down", "action": "down"},
+		{"key": "left", "action": "left"},
+		{"key": "right", "action": "right"}
+	]
+}

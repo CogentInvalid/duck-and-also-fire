@@ -1,0 +1,10 @@
+node_modules/
+lua/
+raw/
+build/
+.vscode/
+package-lock.json
+notes.txt
+*.tiled-session
+*.png~
+*.kra~
