@@ -25,14 +25,20 @@ export class CameraManager extends System {
 	}
 
 	update(dt: number) {
+		this.constrainToBounds();
+	}
+
+	postUpdate(dt: number): void {
 		this.followTarget(dt);
 		this.constrainToBounds();
 	}
 
 	followTarget(dt: number): void {
 		if (this.target) {
-			this.x -= (this.x - this.target.x) * 8 * dt;
-			this.y -= (this.y - (this.target.y - 20)) * 8 * dt;
+			this.x = lume.round(this.target.x, 1);
+			this.y = lume.round(this.target.y - 20, 1);
+			// this.x -= (this.x - this.target.x) * 8 * dt;
+			// this.y -= (this.y - (this.target.y - 20)) * 8 * dt;
 		}
 	}
 

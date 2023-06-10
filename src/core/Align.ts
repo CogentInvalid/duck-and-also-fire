@@ -42,7 +42,11 @@ export class Align {
 	static centerInCell(obj: GridObject, cell: Rect, centerX: number, centerY: number) {
 		let cx = cell.x + cell.width / 2;
 		let cy = cell.y + cell.height / 2;
-		let img = obj.image.image;
+		let img = obj.image?.image;
+		if (!img) {
+			obj.setPosition(cx, cy + 24 - obj.centerY);
+			return;
+		}
 		centerX = centerX / img.width;
 		centerY = centerY / img.height;
 		let dx = img.originX - centerX;

@@ -18,6 +18,7 @@ export class Layers<T> {
 		layer.name = name.toString();
 		this.layers.set(name, layer);
 		layer.camera = camera;
+		return layer;
 	}
 
 	get(name: T): GameObject {

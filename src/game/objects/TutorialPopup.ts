@@ -2,6 +2,7 @@ import { Align } from "core/Align";
 import { Easing } from "core/Easing";
 import { TextProcessor } from "core/TextProcessor";
 import { Transform } from "core/Transform";
+import { Component } from "core/components/Component";
 import { TextScroller } from "core/components/TextScroller";
 import { Container } from "core/objects/Container";
 import { Image } from "core/objects/Image";
@@ -18,6 +19,8 @@ export class TutorialPopup extends Container {
 
 	constructor(scene: GameScene, message: string) {
 		super(scene);
+
+		this.addComponent(FollowComponent);
 
 		let bg = this.bg = this.addImage("popup");
 		bg.setOrigin(0.5, 1);
@@ -78,14 +81,25 @@ export class TutorialPopup extends Container {
 		this.targetOffsetY = offsetY;
 	}
 
-	update(dt: number): void {
-		if (this.followTarget) {
-			this.x = this.followTarget.x;
-			this.y = this.followTarget.y + this.targetOffsetY;
-		}
-		super.update(dt);
+}
+
+export class FollowComponent extends Component {
+	obj: TutorialPopup;
+
+	update() {
+		this.follow();
 	}
 
+	preDraw() {
+		this.follow();
+	}
+
+	follow() {
+		if (this.obj.followTarget) {
+			this.obj.x = this.obj.followTarget.x;
+			this.obj.y = this.obj.followTarget.y + this.obj.targetOffsetY;
+		}
+	}
 }
 
 export class TutorialPopupSkip extends Container {

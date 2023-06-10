@@ -37,6 +37,7 @@ export abstract class Renderer {
 	}
 
     objectInBounds(obj: GameObject, bounds: Rect): boolean {
+        return true;
         let globalPos = obj.transform.globalPosition2();
         let x = globalPos.x;
         let y = globalPos.y;

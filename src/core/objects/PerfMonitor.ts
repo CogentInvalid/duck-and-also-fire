@@ -13,12 +13,12 @@ export class PerfMonitor extends GameObject {
 		this.addSequence(async function (script) {
 			await script.wait(1);
 			while (true) {
-				await script.wait(1);
+				await script.wait(0.5);
 				deltas.push(love.timer.getAverageDelta() * 1000);
 				let averageDelta = deltas.reduce((a, b) => a + b, 0) / deltas.length;
 				// print(averageDelta);
 				text.str = averageDelta.toFixed(2) + "ms";
-				if (deltas.length > 10) deltas.shift();
+				if (deltas.length > 2) deltas.shift();
 			}
 		}, this);
 

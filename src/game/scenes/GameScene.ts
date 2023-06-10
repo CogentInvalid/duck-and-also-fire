@@ -81,15 +81,15 @@ export class GameScene extends Scene {
 		let gameManager = this.gameManager = this.addSystem(new GameManager(this));
 		gameManager.startGame();
 
-		// let perfMonitor = this.add(PerfMonitor, this);
-		// this.addToLayer(perfMonitor, "ui");
+		let perfMonitor = this.add(PerfMonitor, this);
+		this.addToLayer(perfMonitor, "ui");
 	}
 
 	update(dt: number): void {
 		super.update(dt);
 
-		let objects = this.layers.get("default").children;
-		this.layers.get("default").children = lume.sort(objects, (a, b) => a.y < b.y);
+		// let layer = this.layers.get("default");
+		// layer.children = lume.sort(layer.children, (a, b) => a.transform._y < b.transform._y);
 	}
 
 	addToLayer(obj: GameObject, layer: GameLayer) {
