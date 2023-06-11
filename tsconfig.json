@@ -21,7 +21,8 @@
     "noHeader": true,
     "noResolvePaths": [
       "../libs/slab",
-      "../libs/loveframes"
+      "../libs/loveframes",
+      "../libs/sort"
     ]
   }
 }

@@ -7,13 +7,11 @@ export class Transform {
 	children: Transform[] = [];
 	parent?: Transform;
 
-	_x = 0;
-	_y = 0;
+	private _x = 0;
+	private _y = 0;
 	private _angle = 0;
 	private _sx = 1;
 	private _sy = 1;
-	private _ox = 0;
-	private _oy = 0;
 
 	constructor(x?: number, y?: number) {
 		this.matrix = love.math.newTransform();
@@ -23,7 +21,7 @@ export class Transform {
 	}
 
 	private updateMatrix() {
-		this.matrix.setTransformation(this._x, this._y, this._angle, this._sx, this._sy, this._ox, this._oy);
+		this.matrix.setTransformation(this._x, this._y, this._angle, this._sx, this._sy, 0, 0);
 	}
 
 	get localMatrix() {
@@ -36,25 +34,24 @@ export class Transform {
 	}
 
 	get globalPosition(): Vector2 {
-		if (!this.parent) return {x: this._x, y: this._y};
-		let parentPos = this.parent.globalPosition;
-		if (this._angle != 0 || this._sx != 1 || this._sy != 1) {
-			let matrix = this.globalMatrix;
-			let [x, y] = matrix.transformPoint(0, 0);
-			return { x: x, y: y};
-		}
-		else return {x: parentPos.x + this._x, y: parentPos.y + this._y};
+		return this.getGlobalPosition();
 	}
 
-	globalPosition2(): Vector2 {
+	getGlobalPosition(): Vector2 {
 		if (!this.parent) return {x: this._x, y: this._y};
-		let parentPos = this.parent.globalPosition;
-		if (this._angle != 0 || this._sx != 1 || this._sy != 1) {
+		let parentPos = this.parent.getGlobalPosition();
+		if (this._angle == 0 && this._sx == 1 && this._sy == 1) {
+			return {x: parentPos.x + this._x, y: parentPos.y + this._y};
+		}
+		else {
 			let matrix = this.globalMatrix;
 			let [x, y] = matrix.transformPoint(0, 0);
 			return { x: x, y: y};
 		}
-		else return {x: parentPos.x + this._x, y: parentPos.y + this._y};
+	}
+
+	get localPosition(): Vector2 {
+		return {x: this._x, y: this._y};
 	}
 
 	get x() {return this._x;}
@@ -94,6 +91,52 @@ export class Transform {
 		this.updateMatrix();
 	}
 
+	getGlobalX() {
+		return this.getGlobalPosition().x;
+	}
+
+	get globalX(): number {
+		return this.getGlobalX();
+	}
+
+	setGlobalX(val: number) {
+		if (!this.parent) this._x = val;
+		else if (this.parent._angle == 0 && this.parent._sx == 1) this._x = val - this.parent._x;
+		else {
+			let matrix = this.parent.globalMatrix.clone();
+			let [x, y] = matrix.inverseTransformPoint(val, 0);
+			this._x = x;
+		}
+		this.updateMatrix();
+	}
+
+	set globalX(val: number) {
+		this.setGlobalX(val);
+	}
+
+	getGlobalY() {
+		return this.getGlobalPosition().y;
+	}
+
+	get globalY(): number {
+		return this.getGlobalY();
+	}
+
+	setGlobalY(val: number) {
+		if (!this.parent) this._y = val;
+		else if (this.parent._angle == 0 && this.parent._sy == 1) this._y = val - this.parent._y;
+		else {
+			let matrix = this.parent.globalMatrix.clone();
+			let [x, y] = matrix.inverseTransformPoint(0, val);
+			this._y = y;
+		}
+		this.updateMatrix();
+	}
+
+	set globalY(val: number) {
+		this.setGlobalY(val);
+	}
+
 	get globalScaleX() {
 		return this.parent ? this.parent.globalScaleX * this.scaleX : this.scaleX;
 	}
@@ -103,18 +146,6 @@ export class Transform {
 	}
 
 	get globalScale() {return this.globalScaleX;}
-
-	// get offsetX() {return this._ox;}
-	// set offsetX(val: number) {
-	// 	this._ox = val;
-	// 	this.updateMatrix();
-	// }
-
-	// get offsetY() {return this._oy;}
-	// set offsetY(val: number) {
-	// 	this._oy = val;
-	// 	this.updateMatrix();
-	// }
 
 	setPosition(x: number, y: number) {
 		this.x = x;
@@ -140,7 +171,6 @@ export class Transform {
 		love.graphics.translate(this._x, this._y);
 		if (this._angle != 0) love.graphics.rotate(this._angle);
 		if (this._sx != 1 || this._sy != 1) love.graphics.scale(this._sx, this._sy);
-		// not handling offset
 	}
 
 }

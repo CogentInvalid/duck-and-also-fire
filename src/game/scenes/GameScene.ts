@@ -1,4 +1,3 @@
-import { Event } from "core/Event";
 import { Game } from "core/Game";
 import { Layers } from "core/Layers";
 import { Scene } from "core/Scene";
@@ -28,10 +27,13 @@ export class GameScene extends Scene {
 	gameManager: GameManager;
 	inputObj: GameObject;
 	hud: HUD;
+	sort: any;
+	perfMonitor: PerfMonitor;
 	
 	constructor(game: Game) {
 		super(game);
 
+		this.sort = require("../libs/sort");
 		this.renderer = new PixelRenderer(this, 2);
 
 		let collisionMap = new CollisionMap(!game.config.webBuild);
@@ -81,15 +83,23 @@ export class GameScene extends Scene {
 		let gameManager = this.gameManager = this.addSystem(new GameManager(this));
 		gameManager.startGame();
 
-		let perfMonitor = this.add(PerfMonitor, this);
+		let perfMonitor = this.perfMonitor = this.add(PerfMonitor, this);
 		this.addToLayer(perfMonitor, "ui");
 	}
 
 	update(dt: number): void {
 		super.update(dt);
+		// this.perfMonitor.update(dt);
 
-		// let layer = this.layers.get("default");
-		// layer.children = lume.sort(layer.children, (a, b) => a.transform._y < b.transform._y);
+		let layer = this.layers.get("default");
+		// // layer.children = lume.sort(layer.children, (a, b) => a.transform._y < b.transform._y);
+		let insertion_sort = this.sort.insertion_sort;
+		layer.children = insertion_sort(layer.children, (a, b) => a.transform._y < b.transform._y);
+	}
+
+	draw(): void {
+		super.draw();
+		// this.perfMonitor.draw();
 	}
 
 	addToLayer(obj: GameObject, layer: GameLayer) {

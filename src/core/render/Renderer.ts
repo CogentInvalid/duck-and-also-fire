@@ -22,14 +22,14 @@ export abstract class Renderer {
         let obj = parentObject;
 
         love.graphics.push();
-        let inBounds = this.objectInBounds(obj, bounds);
-        if (inBounds) {
+        // let inBounds = this.objectInBounds(obj, bounds);
+        // if (inBounds) {
             obj.transform.applyGraphicsTransform();
             obj.draw(bounds);
-        }
-        else if (obj.children.length > 0) {
-            obj.transform.applyGraphicsTransform();
-        }
+        // }
+        // else if (obj.children.length > 0) {
+        //     obj.transform.applyGraphicsTransform();
+        // }
         for (const child of obj.children) {
             this.drawObjectHierarchy(child, bounds);
         }
@@ -38,7 +38,7 @@ export abstract class Renderer {
 
     objectInBounds(obj: GameObject, bounds: Rect): boolean {
         return true;
-        let globalPos = obj.transform.globalPosition2();
+        let globalPos = obj.transform.getGlobalPosition();
         let x = globalPos.x;
         let y = globalPos.y;
         let margin = 80;
